@@ -1,4 +1,4 @@
 # Bankist-App
-<a href="https://ruy64.github.io/Bankist-App/">https://ruy64.github.io/Bankist-App/</a>
+<a href="https://ruy64.github.io/bankist-app/">https://ruy64.github.io/Bankist-App/</a>
 <br>
-<img src="https://ruy64.github.io/Bankist-App/img/app-preview.png" width="600">
+<img src="https://ruy64.github.io/bankist-app/img/app-preview.png" width="600">
