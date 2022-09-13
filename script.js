@@ -6,28 +6,28 @@
 
 // Data
 const account1 = {
-  owner: 'Kaarlo Sasiang',
+  owner: 'Jonas Schmedtmann',
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 1111,
 };
 
 const account2 = {
-  owner: 'John Doe',
+  owner: 'Jessica Davis',
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
 };
 
 const account3 = {
-  owner: 'Kian Basalo',
+  owner: 'Steven Thomas Williams',
   movements: [200, -200, 340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
   pin: 3333,
 };
 
 const account4 = {
-  owner: 'Zyrene Arcaya',
+  owner: 'Sarah Smith',
   movements: [430, 1000, 700, 50, 90],
   interestRate: 1,
   pin: 4444,
@@ -77,9 +77,9 @@ const displayMovements = function (movements) {
   }, 1000);
 };
 
-const displayBalance = function (movement) {
-  const balance = movement.reduce((acc, cur) => acc + cur, 0);
-  labelBalance.textContent = `${balance} EUR`;
+const displayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, cur) => acc + cur, 0);
+  labelBalance.textContent = `${acc.balance} EUR`;
 };
 
 const displaySummary = function (account) {
@@ -88,7 +88,9 @@ const displaySummary = function (account) {
     .reduce((mov, cur) => mov + cur, 0);
   labelSumIn.textContent = `${Math.abs(incomes.toFixed(2))}€`;
 
-  const out = account.movements.filter(mov => mov < 0).reduce((acc, cur) => acc + cur);
+  const out = account.movements
+    .filter(mov => mov < 0)
+    .reduce((acc, cur) => acc + cur);
   labelSumOut.textContent = `${Math.abs(out.toFixed(2))}€`;
 
   const interest = movements
@@ -109,6 +111,15 @@ const createUsernames = function (accs) {
   });
 };
 createUsernames(accounts);
+
+const updateUI = function (acc) {
+  // Display Movements
+  displayMovements(acc.movements);
+  // Display Balance
+  displayBalance(acc);
+  // Display Summary
+  displaySummary(acc);
+};
 
 // Login function
 let currentAccount;
@@ -131,15 +142,33 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
 
-    // Display Movements
-    displayMovements(currentAccount.movements);
-    // Display Balance
-    displayBalance(currentAccount.movements);
-    // Display Summary
-    displaySummary(currentAccount);
+    updateUI(currentAccount);
   } else {
     console.error('User not found!');
   }
+});
+
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = +inputTransferAmount.value;
+  const receiverAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+
+  inputTransferAmount.value = inputTransferTo.value = '';
+
+  if (
+    amount > 0 &&
+    currentAccount.balance >= amount &&
+    receiverAcc &&
+    receiverAcc?.username !== currentAccount.username
+  ) {
+    // Doing the transfer
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
+    updateUI(currentAccount);
+  }
+  
 });
 
 /////////////////////////////////////////////////
