@@ -148,6 +148,20 @@ btnLogin.addEventListener('click', function (e) {
   }
 });
 
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = +inputLoanAmount.value;
+
+  if (amount > 0 && currentAccount.movements.some(mov => mov > amount * 0.1)) {
+    currentAccount.movements.push(amount);
+    updateUI(currentAccount);
+    inputLoanAmount.value = '';
+  }else if(currentAccount.movements.some(mov => mov < amount * 0.1)){
+    alert(`You cannot loan any amount more than the 10% of your biggest deposit! ${amount * 0.1} is greater than ${currentAccount.movements.reduce((mov, cur) => mov > cur ? mov : cur)} `)
+  }
+});
+
 btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
   const amount = +inputTransferAmount.value;
@@ -168,7 +182,26 @@ btnTransfer.addEventListener('click', function (e) {
     receiverAcc.movements.push(amount);
     updateUI(currentAccount);
   }
-  
+});
+
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    +inputClosePin.value === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+    console.log(index);
+    // Hide UI
+    containerApp.style.opacity = 0;
+    // delete user
+    accounts.splice(index, 1);
+    inputCloseUsername.value = inputClosePin.value = '';
+    labelWelcome.textContent = 'Log in to get started';
+  }
 });
 
 /////////////////////////////////////////////////
@@ -326,5 +359,8 @@ const eurToUSD = 1.1;
 //   }
 // }
 
-const account = accounts.find(acc => acc.owner === 'Jessica Davis');
-console.log(account);
+// const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+// console.log(account);
+
+// const anyDeposits = movements.some(mov => mov > 0);
+// console.log(anyDeposits);
