@@ -205,9 +205,9 @@ let currentAccount;
 
 // Always login
 
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 1;
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity = 1;
 
 // Date internationalization
 
