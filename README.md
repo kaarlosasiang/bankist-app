@@ -6,6 +6,6 @@
 - JS Intl API, Timers, Dates and numbers
 
 <h2>Sample Users</h2>
-1. { username: "js", password: "1111" };
+1. Username: "js", Password: "1111"
 <br>
-2. { username: "jd", password: "2222" };
+2. Username: "jd", Password: "2222"
